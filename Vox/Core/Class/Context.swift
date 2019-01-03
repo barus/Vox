@@ -55,7 +55,10 @@ public class Context: NSObject {
     }
     
     @discardableResult func mapResource(for data: NSMutableDictionary) -> Resource? {
-        guard let id = data["id"] as? String else {
+        let stringID = data["id"] as? String
+        let intID = data["id"] as? NSNumber
+
+        guard let id = stringID ?? intID?.stringValue else {
             fatalError("Resource id must be defined")
         }
         
