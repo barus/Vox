@@ -19,15 +19,25 @@ final public class ErrorObject {
     public let detail: String?
     public let source: Source?
     public let meta: [String: Any]?
+    public let dictionary: [String: Any]?
     
     init(dictionary: [String: Any]) {
         id = dictionary["id"] as? String
         links = dictionary["links"] as? [String: Any]
-        status = dictionary["status"] as? String
         code = dictionary["code"] as? String
         title = dictionary["title"] as? String
         detail = dictionary["detail"] as? String
-        
+        self.dictionary = dictionary
+
+        let stringStatus = dictionary["status"] as? String
+        let intStatus = dictionary["status"] as? NSNumber
+
+        if let status = stringStatus ?? intStatus?.stringValue {
+            self.status = status
+        } else {
+            status = nil
+        }
+
         let source: Source? = {
             guard let source = dictionary["source"] as? [String: Any] else {
                 return nil
