@@ -19,7 +19,7 @@ final public class ErrorObject {
     public let detail: String?
     public let source: Source?
     public let meta: [String: Any]?
-    public let dictionary: [String: Any]?
+    public let dictionary: [String: Any]
     
     init(dictionary: [String: Any]) {
         id = dictionary["id"] as? String
