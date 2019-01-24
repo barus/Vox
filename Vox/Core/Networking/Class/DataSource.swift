@@ -50,6 +50,23 @@ public class DataSource<ResourceType: Resource>: NSObject, CRUD {
         
         return request
     }
+
+    public func create(_ resources: [ResourceType]) -> Request<ResourceType, ResourceCollectionSuccessBlock> {
+        let path: String = {
+            switch strategy {
+            case .path(let path):
+                return path
+            case .router(_):
+                return ""
+            }
+        }()
+
+        let request = Request<ResourceType, ResourceCollectionSuccessBlock>(path: path, httpMethod: "POST", client: client)
+
+        request.resources = resources
+
+        return request
+    }
     
     public func fetch() -> FetchRequest<ResourceType, ResourceCollectionSuccessBlock> {
         var path: String = {

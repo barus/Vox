@@ -11,6 +11,7 @@ public class Request<ResourceType: Resource, SuccessCallbackType>: DataSourceRes
     fileprivate var queryItems: [URLQueryItem] = []
     
     var resource: ResourceType?
+    var resources: [ResourceType]?
     
     var successBlock: SuccessCallbackType?
     var failureBlock: ((Error?) -> Void)?
@@ -35,7 +36,12 @@ public class Request<ResourceType: Resource, SuccessCallbackType>: DataSourceRes
     }
     
     func execute() throws {
-        let parameters: [String: Any]? = try resource?.documentDictionary()
+        var parameters: [String: Any]?
+        if resources != nil {
+            parameters = try resources?.documentDictionary()
+        } else {
+            parameters = try resource?.documentDictionary()
+        }
         
         client.executeRequest(path: path, method: httpMethod, queryItems: queryItems, bodyParameters: parameters, success: { (response, data) in
             if let success = self.successBlock as? DataSource<ResourceType>.ResourceSuccessBlock {
