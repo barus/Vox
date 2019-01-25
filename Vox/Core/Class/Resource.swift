@@ -152,6 +152,31 @@ extension Array where Element: Resource {
         
         return ["data": array]
     }
+
+    public func documentDictionaryForCreation() throws -> [String: Any] {
+        let array = try map { (resource) throws -> [String: Any] in
+            let attributes = resource.attributes
+            let relationships = resource.relationships
+
+            var dictionary: [String: Any] = [
+                "type": resource.type
+            ]
+
+            if let attributes = attributes,
+                attributes.count > 0 {
+                dictionary["attributes"] = attributes
+            }
+
+            if let relationships = relationships,
+                relationships.count > 0 {
+                dictionary["relationships"] = relationships
+            }
+
+            return dictionary
+        }
+
+        return ["data": array]
+    }
     
     public func documentData() throws -> Data {
         let data = try JSONSerialization.data(withJSONObject: documentDictionary(), options: [])

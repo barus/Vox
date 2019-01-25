@@ -38,7 +38,7 @@ public class Request<ResourceType: Resource, SuccessCallbackType>: DataSourceRes
     func execute() throws {
         var parameters: [String: Any]?
         if resources != nil {
-            parameters = try resources?.documentDictionary()
+            parameters = try resources?.documentDictionaryForCreation()
         } else {
             parameters = try resource?.documentDictionary()
         }
